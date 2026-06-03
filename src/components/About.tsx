@@ -6,28 +6,28 @@ export const About: React.FC = () => {
     {
       name: 'Skillrack',
       solved: 900,
-      link: '#',
+      link: 'https://www.skillrack.com/faces/resume.xhtml?id=514626&key=80756f6fc2dc0c538717660c61d38e52cc740a54',
       color: 'var(--cyan-glow)',
       rankLabel: '900+ Problems Solved',
     },
     {
       name: 'CodeChef',
       solved: 250,
-      link: '#',
+      link: 'https://www.codechef.com/users/gokulavasan_b',
       color: 'var(--purple-glow)',
       rankLabel: '250+ Problems Solved',
     },
     {
       name: 'LeetCode',
       solved: 160,
-      link: '#',
+      link: 'https://leetcode.com/u/Gokulavasan_0507/',
       color: 'var(--blue-accent)',
       rankLabel: '160+ Problems Solved',
     },
     {
       name: 'HackerRank',
       solved: 30,
-      link: '#',
+      link: 'https://www.hackerrank.com/profile/gokulavasan662',
       color: '#2ec866',
       rankLabel: '30+ Problems Solved',
     },
@@ -159,6 +159,8 @@ export const About: React.FC = () => {
             <div key={profile.name} className="col-sm-6 col-md-3">
               <a 
                 href={profile.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="space-card d-flex flex-column align-items-center text-center text-decoration-none p-4 d-block h-100"
                 style={{
                   borderColor: `rgba(${profile.name === 'Skillrack' || profile.name === 'LeetCode' ? '0, 242, 254' : '189, 0, 255'}, 0.15)`,

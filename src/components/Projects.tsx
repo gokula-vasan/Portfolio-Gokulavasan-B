@@ -20,7 +20,7 @@ export const Projects: React.FC = () => {
       description: 'Developed a robust full-stack Employee Management System (MERN) equipped with scalable RESTful APIs, modern dashboard interfaces, and granular user provisioning. Enhanced administrative authorization using secure JWT encryption protocols and strict Role-Based Access Control (RBAC) tiers.',
       techStack: ['React.JS', 'Express.JS', 'Node.JS', 'MongoDB', 'Bootstrap', 'JWT', 'RBAC'],
       github: 'https://github.com',
-      demo: '#',
+      demo: 'https://ems-sigma-three.vercel.app/',
       icon: <ShieldAlert size={28} className="text-cyan" />,
       borderType: 'cyan',
     },
@@ -30,7 +30,7 @@ export const Projects: React.FC = () => {
       description: 'Engineered a high-concurrency MERN e-commerce architecture utilizing robust ACID-compliant transactional flows to preserve absolute database consistency. Formulated an association rule learning algorithm for native Market Basket Analysis to deliver immediate "Frequently Bought Together" product suggestions.',
       techStack: ['Node.JS', 'Express.JS', 'React.JS', 'MongoDB', 'Bootstrap', 'Market Basket Analysis', 'ACID Transactions'],
       github: 'https://github.com',
-      demo: '#',
+      demo: 'https://online-product-selling-web.vercel.app/',
       icon: <ShoppingBag size={28} className="text-purple" />,
       borderType: 'purple',
     },
@@ -123,6 +123,8 @@ export const Projects: React.FC = () => {
                     {project.demo && (
                       <a 
                         href={project.demo} 
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="btn-cosmic-outline py-2 px-4 fs-7"
                       >
                         <ExternalLink size={16} /> Live Demo
