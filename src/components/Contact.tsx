@@ -4,7 +4,7 @@ import { Mail, Phone, Send, Copy, Check } from 'lucide-react';
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [copied, setCopied] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
   const emailAddress = 'gokulavasanbk@gmail.com';
 
@@ -18,28 +18,40 @@ export const Contact: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus('submitting');
     
-    const subject = encodeURIComponent(formData.subject || 'Portfolio Contact Inquiry');
-    const body = encodeURIComponent(
-      `Hello Gokulavasan,\n\nYou have received a new message from your portfolio website:\n\n` +
-      `Sender Name: ${formData.name}\n` +
-      `Sender Email: ${formData.email}\n\n` +
-      `Message:\n${formData.message}\n\n` +
-      `Best regards,\n${formData.name}`
-    );
-    
-    const mailtoUrl = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
-    
-    // Open mail client
-    window.location.href = mailtoUrl;
-    
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 3000);
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${emailAddress}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          _subject: `New Portfolio Message: ${formData.subject || 'No Subject'}`
+        })
+      });
+      
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setStatus('error');
+    } finally {
+      setTimeout(() => {
+        setStatus('idle');
+      }, 6000);
+    }
   };
 
   return (
@@ -245,21 +257,41 @@ export const Contact: React.FC = () => {
                 {/* Submit button */}
                 <button 
                   type="submit" 
-                  disabled={submitted}
+                  disabled={status === 'submitting'}
                   className="btn-cosmic py-3 justify-content-center w-100"
                   style={{
                     background: 'linear-gradient(135deg, rgba(189, 0, 255, 0.15) 0%, rgba(0, 242, 254, 0.25) 100%)',
                     borderColor: 'var(--purple-glow)'
                   }}
                 >
-                  {submitted ? (
-                    <span>Thank You! Message Dispatched...</span>
-                  ) : (
+                  {status === 'submitting' && (
+                    <span>Sending Message...</span>
+                  )}
+                  {status === 'success' && (
+                    <span className="text-success fw-bold">✓ Message Sent Successfully!</span>
+                  )}
+                  {status === 'error' && (
+                    <span className="text-danger fw-bold">✗ Failed to Send. Try again!</span>
+                  )}
+                  {status === 'idle' && (
                     <>
                       <Send size={16} /> Shoot Message
                     </>
                   )}
                 </button>
+
+                {status === 'success' && (
+                  <div 
+                    className="alert text-center fs-8 p-3 rounded-3 border mt-2"
+                    style={{
+                      background: 'rgba(0, 242, 254, 0.05)',
+                      borderColor: 'rgba(0, 242, 254, 0.2)',
+                      color: 'var(--cyan-glow)'
+                    }}
+                  >
+                    💡 <strong>First submission?</strong> Check your inbox (<strong>{emailAddress}</strong>) to activate FormSubmit email forwarding.
+                  </div>
+                )}
               </form>
             </div>
           </div>
